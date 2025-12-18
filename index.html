@@ -240,10 +240,161 @@
     height: 24px;
     fill: white;
 }
+/* --- TELA DE BLOQUEIO (LOCK SCREEN) --- */
+            #lock-screen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+                z-index: 9999; /* Fica acima de tudo */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: opacity 0.8s ease, visibility 0.8s ease;
+            }
+
+            .lock-box {
+                text-align: center;
+                max-width: 90%;
+                width: 350px;
+            }
+
+            .lock-icon {
+                font-size: 3rem;
+                margin-bottom: 20px;
+                animation: floatLock 3s ease-in-out infinite;
+            }
+
+            @keyframes floatLock {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+
+            .lock-input {
+                width: 100%;
+                padding: 15px;
+                border-radius: 12px;
+                border: 2px solid #eee;
+                font-family: 'Poppins', sans-serif;
+                font-size: 1rem;
+                margin: 20px 0;
+                outline: none;
+                transition: 0.3s;
+                text-align: center;
+            }
+
+            .lock-input:focus {
+                border-color: var(--accent);
+                box-shadow: 0 0 0 4px rgba(255, 107, 129, 0.1);
+            }
+
+            .lock-btn {
+                background: var(--primary-gradient);
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 50px;
+                font-weight: 700;
+                cursor: pointer;
+                font-size: 1rem;
+                box-shadow: 0 5px 15px rgba(255, 107, 129, 0.3);
+                transition: transform 0.2s;
+            }
+
+            .lock-btn:active { transform: scale(0.95); }
+
+            /* Animação de Erro (Tremidinha) */
+            .shake { animation: shake 0.5s; }
+            @keyframes shake {
+                0% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                50% { transform: translateX(10px); }
+                75% { transform: translateX(-10px); }
+                100% { transform: translateX(0); }
+            }
+
+            /* Classe para esconder a tela */
+            .unlocked {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+
+            /* --- ESTILOS NOVOS PARA OS MOTIVOS --- */
+            .reasons-controls {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                margin-bottom: 30px;
+            }
+
+            .control-btn {
+                padding: 12px 24px;
+                border: none;
+                border-radius: 50px;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
+                cursor: pointer;
+                transition: 0.3s;
+                background: white;
+                color: var(--text-dark);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            }
+
+            .control-btn.highlight {
+                background: var(--primary-gradient);
+                color: white;
+                box-shadow: 0 8px 20px rgba(255, 107, 129, 0.4);
+            }
+
+            .control-btn:active { transform: scale(0.95); }
+
+            /* Estilo para quando mostrar um motivo aleatório (Grandão) */
+            .random-highlight-card {
+                text-align: center;
+                padding: 40px 20px;
+                animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+            .random-highlight-card h3 {
+                font-size: 1.5rem;
+                color: var(--accent);
+                margin-bottom: 10px;
+            }
+            .random-highlight-card p {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: var(--text-dark);
+            }
+
+            @keyframes popIn {
+                from { opacity: 0; transform: scale(0.8); }
+                to { opacity: 1; transform: scale(1); }
+            }
 
         </style>
     </head>
     <body>
+
+        <div id="lock-screen">
+        <div class="glass-card lock-box">
+            <div class="lock-icon">🔒</div>
+            <h2 id="lock-title">Identifique-se</h2>
+            <p id="lock-subtitle" style="color: var(--text-light); margin-bottom: 10px;">
+                Área restrita. Prove que você é a Fernanda.
+            </p>
+            
+            <p id="lock-question" style="font-weight: 600; font-size: 1.1rem; margin-top: 15px;">
+                Que dia a gente se conheceu? (Número)
+            </p>
+
+            <input type="text" id="lock-input" class="lock-input" placeholder="Sua resposta..." autocomplete="off">
+            
+            <button class="lock-btn" onclick="checkSecurity()">Confirmar</button>
+            <p id="error-msg" style="color: #EF4444; font-size: 0.8rem; margin-top: 10px; display: none;"></p>
+        </div>
+    </div>
 
         <div class="background-blobs">
             <div class="blob blob-1"></div>
@@ -276,14 +427,14 @@
                     <div class="glass-card event-card">
                         <span class="event-date">13/09/2024</span>
                         <h3>Primeira vez que te vi</h3>
-                        <p style="color: var(--text-light);">Primeira vez que nossos olhos se cruzaram, já te achei linda. Se ali eu ja soubesse a pessoa incrível que você é...</p>
+                        <p style="color: var(--text-light);">Primeira vez que nossos olhos se cruzaram, já te achei linda. Se ali eu já soubesse a pessoa incrível que você é...</p>
                     </div>
                 </div>
                 <div class="event"></div>
                     <div class="glass-card event-card">
                         <span class="event-date">19/07/2025</span>
                         <h3>O Início de Tudo</h3>
-                        <p style="color: var(--text-light);">Onde tudo começou, no alma. Ali eu ja estava apaixonado por você, nunca imaginei que um festival ia me presentear com a melhor coisa que já aconteceu da minha vida</p>
+                        <p style="color: var(--text-light);">Onde tudo começou, no alma. Ali eu já estava apaixonado por você, nunca imaginei que um festival ia me presentear com a melhor coisa que já aconteceu na minha vida.</p>
                     </div>
                 </div>
                 <div class="event">
@@ -296,7 +447,7 @@
                     <div class="glass-card event-card">
                         <span class="event-date">21/09/2025</span>
                         <h3>Primeiro Te amo</h3>
-                        <p style="color: var(--text-light);">Já queria falar a muito tempo, e simplesmente chegou um momento que eu olhei para seus olhos e senti um amor que eu nunca senti antes, e as palavras só sairam da minha boca.</p>
+                        <p style="color: var(--text-light);">Já queria falar há muito tempo, e simplesmente chegou um momento que eu olhei para seus olhos e senti um amor que eu nunca senti antes, e as palavras só sairam da minha boca.</p>
                     </div>
                 </div>
                 <div class="event">
@@ -309,7 +460,7 @@
                 <div class="event">
                     <div class="glass-card event-card">
                         <span class="event-date">Hoje</span>
-                        <h3>Contruindo...</h3>
+                        <h3>Construindo...</h3>
                         <p style="color: var(--text-light);">Muito empolgado por tudo que vamos viver ainda, amor da minha vida.</p>
                     </div>
                 </div>
@@ -318,62 +469,15 @@
         </section>
 
         <section id="tab-reasons" class="tab-content">
-            <h2>Coisas que eu amo em você</h2>
-            <ul class="reasons-list">
-                <li><span class="reason-num">1</span> Seu olhar.</li>
-                <li><span class="reason-num">2</span> Como você ajuda as pessoas sem esperar nada em troca.</li>
-                <li><span class="reason-num">3</span> Você ser toque fisico.</li>
-                <li><span class="reason-num">4</span> Sua beleza surreal.</li>
-                <li><span class="reason-num">5</span> Você ri até das minhas piadas sem graças.</li>
-                <li><span class="reason-num">6</span> Quando você dança comendo.</li>
-                <li><span class="reason-num">7</span> Os mil beijos que você me dá.</li>
-                <li><span class="reason-num">8</span> Seu corpo inteiro.</li>
-                <li><span class="reason-num">9</span> Seu beijo.</li>
-                <li><span class="reason-num">10</span> Seu gosto musical.</li>
-                <li><span class="reason-num">11</span> O esforço que você faz para gostar das minhas coisas.</li>
-                <li><span class="reason-num">12</span> Seu sorriso.</li>
-                <li><span class="reason-num">13</span> O seu carinho por mim.</li>
-                <li><span class="reason-num">14</span> A pessoa tranquila que você é.</li>
-                <li><span class="reason-num">15</span> Seu cabelo.</li>
-                <li><span class="reason-num">16</span> Sua risada.</li>
-                <li><span class="reason-num">17</span> O jeito que você me entende.</li>
-                <li><span class="reason-num">18</span> O seu cheiro.</li>
-                <li><span class="reason-num">19</span> Sua autenticidade.</li>
-                <li><span class="reason-num">20</span> Sua bondade.</li>
-                <li><span class="reason-num">21</span> Sua energia.</li>
-                <li><span class="reason-num">22</span> Como você é inteligente.</li>
-                <li><span class="reason-num">23</span> Quando eu abro a minha mão e você me dá a sua como se fosse thor e o martelo.</li>
-                <li><span class="reason-num">24</span> A sua dedicação.</li>
-                <li><span class="reason-num">25</span> Você me acalma.</li>
-                <li><span class="reason-num">26</span> Você me inspira todos os dias.</li>
-                <li><span class="reason-num">27</span> Você ter me escolhido.</li>
-                <li><span class="reason-num">28</span> Você ter se dado super bem com a minha mãe.</li>
-                <li><span class="reason-num">29</span> Quando você me conta fofocas.</li>
-                <li><span class="reason-num">30</span> Quando você me faz rir.</li>
-                <li><span class="reason-num">31</span> Você ser linda para caralho.</li>
-                <li><span class="reason-num">32</span> Quando você começa a falar muito.</li>
-                <li><span class="reason-num">33</span> O sorriso que você dá quando vai me buscar na porta.</li>
-                <li><span class="reason-num">34</span> Você de biquini.</li>
-                <li><span class="reason-num">35</span> Sua boca.</li>
-                <li><span class="reason-num">36</span> Seu estilo.</li>
-                <li><span class="reason-num">37</span> Quando você entra nas minhas brincadeiras.</li>
-                <li><span class="reason-num">38</span> Quando você me liga.</li>
-                <li><span class="reason-num">39</span> O fato de você falar eu te amo mil vezes no dia.</li>
-                <li><span class="reason-num">40</span> Em tão pouco tempo você me conhece tão bem.</li>
-                <li><span class="reason-num">41</span> Eu sei que posso confiar minha vida a você.</li>
-                <li><span class="reason-num">42</span> Você topa tudo.</li>
-                <li><span class="reason-num">43</span> Quando eu te vejo todos os problemas somem.</li>
-                <li><span class="reason-num">44</span> O jeito que a gente é tão parecido e tão diferente ao mesmo tempo.</li>
-                <li><span class="reason-num">45</span> Quando você me escuta falando coisas de nerd.</li>
-                <li><span class="reason-num">46</span> Quando você me elogia.</li>
-                <li><span class="reason-num">47</span> A intensidade que a gente se ama.</li>
-                <li><span class="reason-num">48</span> Você topar tudo.</li>
-                <li><span class="reason-num">49</span> O conforto bizarro que eu sinto ao seu lado.</li> 
-                <li><span class="reason-num">50</span> Você ser do jeito que eu sempre pedi para Deus.</li>
-                
-                
-                </ul>
-        </section>
+        <h2>Coisas que eu amo em você</h2>
+        
+        <div class="reasons-controls">
+            <button class="control-btn" onclick="renderAllReasons()">Ver Todos 📜</button>
+            <button class="control-btn highlight" onclick="renderRandomReason()">Aleatório 🎲</button>
+        </div>
+
+        <div id="reasons-container"></div>
+    </section>  
 
         <section id="tab-gallery" class="tab-content">
             <h2>Nossos Momentos</h2>
@@ -398,16 +502,16 @@
         </section>
 
        <section id="tab-jukebox" class="tab-content">
-    <h2>Nossa Vibe 🎵</h2>
+    <h2>Nossas músicas 🎵</h2>
     <div class="glass-card jukebox-container" style="text-align: center; padding: 40px 20px;">
         
         <div class="vinyl-icon" style="margin-bottom: 20px;">💿</div>
         
         <p style="margin-bottom: 30px; font-weight: 600; font-size: 1.1rem;">
-            Separei as músicas que lembram a gente...
+            O som da nossa sintonia, escolhido por nós
         </p>
 
-        <a href="https://open.spotify.com/playlist/75QxUSEbsO2vSRpTGEvJYK?si=2jQTd_6VQWa_-BVKxajlCw&pi=mQTHMF6ZSg-S1" target="_blank" class="spotify-btn">
+        <a href="https://open.spotify.com/playlist/75QxUSEbsO2vSRpTGEvJYK?si=2jQTd_6VQWa_-BVKxajlCw&pi=mQTHMF6ZSg-S1    " target="_blank" class="spotify-btn">
             <svg viewBox="0 0 24 24">
                 <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
             </svg>
@@ -418,7 +522,7 @@
 </section>
 
      <section id="tab-letter" class="tab-content">
-        <h2>Para Você...</h2>
+        <h2>Para o amor da minha vida</h2>
         
         <div class="letter-wrapper">
             <div class="paper-letter">
@@ -474,6 +578,70 @@
     </div>
 
         <script>
+
+// LÓGICA DE SENHA
+            let step = 1;
+
+            function checkSecurity() {
+                const input = document.getElementById('lock-input');
+                const val = input.value.trim().toLowerCase(); // Remove espaços e deixa minusculo
+                const title = document.getElementById('lock-title');
+                const question = document.getElementById('lock-question');
+                const errorMsg = document.getElementById('error-msg');
+                const box = document.querySelector('.lock-box');
+
+                if (step === 1) {
+                    // PERGUNTA 1: DIA 13
+                    if (val === '13' || val === 'dia 13') {
+                        // Acertou a primeira
+                        step = 2;
+                        input.value = ''; // Limpa o campo
+                        title.innerText = "Quase lá...";
+                        question.innerText = "Qual será o nome do nosso primeiro filho?";
+                        errorMsg.style.display = 'none';
+                        input.focus();
+                    } else {
+                        // Errou a primeira
+                        erroVisual("Ih, errou o dia? 😢");
+                    }
+                } else if (step === 2) {
+                    // PERGUNTA 2: CAIO
+                    if (val === 'caio') {
+                        // ACERTOU TUDO - DESBLOQUEAR
+                        document.getElementById('lock-screen').classList.add('unlocked');
+                        // Toca uma vibração no celular se suportado
+                        if (navigator.vibrate) navigator.vibrate(200);
+                    } else {
+                        // Errou a segunda
+                        erroVisual("Errou o nome do nosso herdeiro? 😱");
+                    }
+                }
+            }
+
+            function erroVisual(msg) {
+                const errorMsg = document.getElementById('error-msg');
+                const box = document.querySelector('.lock-box');
+                const input = document.getElementById('lock-input');
+                
+                errorMsg.innerText = msg;
+                errorMsg.style.display = 'block';
+                
+                // Animação de tremer
+                box.classList.remove('shake');
+                void box.offsetWidth; // Hack para reiniciar animação
+                box.classList.add('shake');
+                
+                input.value = '';
+                input.focus();
+            }
+
+            // Permitir apertar ENTER para enviar
+            document.getElementById('lock-input').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    checkSecurity();
+                }
+            });
+
             const dataInicio = new Date(2025, 6, 19); 
 
             function atualizarContador() {
@@ -512,6 +680,102 @@
                     }
                 }
             }
+
+// --- LÓGICA DOS MOTIVOS ---
+            
+            // Sua lista completa de motivos
+            const motivosList = [
+                "Seu olhar.",
+                "Como você ajuda as pessoas sem esperar nada em troca.",
+                "Você ser toque físico.",
+                "Sua beleza surreal.",
+                "Você ri até das minhas piadas sem graças.",
+                "Quando você dança comendo.",
+                "Os mil beijos que você me dá.",
+                "Seu corpo inteiro.",
+                "Seu beijo.",
+                "Seu gosto musical.",
+                "O esforço que você faz para gostar das minhas coisas.",
+                "Seu sorriso.",
+                "O seu carinho por mim.",
+                "A pessoa tranquila que você é.",
+                "Seu cabelo.",
+                "Sua risada.",
+                "O jeito que você me entende.",
+                "O seu cheiro.",
+                "Sua autenticidade.",
+                "Sua bondade.",
+                "Sua energia.",
+                "Como você é inteligente.",
+                "Quando eu abro a minha mão e você me dá a sua como se fosse Thor e o martelo.",
+                "A sua dedicação.",
+                "Você me acalma.",
+                "Você me inspira todos os dias.",
+                "Você ter me escolhido.",
+                "Você ter se dado super bem com a minha mãe.",
+                "Quando você me conta fofocas.",
+                "Quando você me faz rir.",
+                "Você ser linda para caralho.",
+                "Quando você começa a falar muito.",
+                "O sorriso que você dá quando vai me buscar na porta.",
+                "Você de biquíni.",
+                "Sua boca.",
+                "Seu estilo.",
+                "Quando você entra nas minhas brincadeiras.",
+                "Quando você me liga.",
+                "O fato de você falar eu te amo mil vezes no dia.",
+                "Em tão pouco tempo você me conhece tão bem.",
+                "Eu sei que posso confiar minha vida a você.",
+                "Você topa tudo.",
+                "Quando eu te vejo todos os problemas somem.",
+                "O jeito que a gente é tão parecido e tão diferente ao mesmo tempo.",
+                "Quando você me escuta falando coisas de nerd.",
+                "Quando você me elogia.",
+                "A intensidade que a gente se ama.",
+                "Você topar tudo.",
+                "O conforto bizarro que eu sinto ao seu lado.",
+                "Você ser do jeito que eu sempre pedi para Deus."
+            ];
+
+            const container = document.getElementById('reasons-container');
+
+            // Função 1: Mostrar todos (Lista)
+            function renderAllReasons() {
+                container.innerHTML = '<ul class="reasons-list"></ul>';
+                const ul = container.querySelector('ul');
+                
+                motivosList.forEach((motivo, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span class="reason-num">${index + 1}</span> ${motivo}`;
+                    // Adiciona um pequeno delay para animar estilo cascata
+                    li.style.animation = `slideUp 0.5s ease forwards ${index * 0.05}s`;
+                    ul.appendChild(li);
+                });
+            }
+
+            // Função 2: Mostrar Aleatório (Card Grande)
+            function renderRandomReason() {
+                // Efeito de vibração se estiver no celular
+                if (navigator.vibrate) navigator.vibrate(50);
+
+                const randomIndex = Math.floor(Math.random() * motivosList.length);
+                const motivoEscolhido = motivosList[randomIndex];
+
+                container.innerHTML = `
+                    <div class="glass-card random-highlight-card">
+                        <h3>Motivo #${randomIndex + 1}</h3>
+                        <p>“${motivoEscolhido}”</p>
+                        <div style="font-size: 3rem; margin-top: 15px;">❤️</div>
+                    </div>
+                `;
+            }
+
+            // Iniciar com um aleatório já na tela para não ficar vazio
+            // Se preferir que comece com a lista, mude para renderAllReasons();
+            renderRandomReason();
+
         </script>
+
+        
     </body>
     </html>
